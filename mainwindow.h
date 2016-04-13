@@ -23,6 +23,10 @@ private slots:
     void siteAChanged(int num);
     void siteBChanged(int num);
     void siteBhChanged(int num);
+    void lineEditAChanged(const QString &mottoIn);
+    void lineEditBChanged(const QString &nameIn);
+    void spinBoxAChanged(int value);
+    void spinBoxBChanged(int value);
     void showFont();
 
 private:

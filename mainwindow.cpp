@@ -22,8 +22,6 @@ void MainWindow::picRender()
     temp += "[Events]" + QString("\n");
     temp += QString("Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\\fs") + QString("%1").arg(fsA) + QString("\\blur3\\pos(500,") + QString("%1").arg(siteA) + ")}" + motto + QString("\n");
     temp += QString("Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\\fs") + QString("%1").arg(fsB) + QString("\\blur3\\pos(") + QString("%1").arg(siteB_h) + "," +  QString("%1").arg(siteB) + QString(")}") + name + QString("\n");
-  //  temp += QString("Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\fs") + QString("%1").arg(fsB) + QString("\blur3\\pos(") + QString("%1").arg(siteB) + "," +  QString("%1").arg(siteB_h) + QString(")}") + name;
-    qDebug()<<temp;
     const std::string str = temp.toStdString();
     strcpy(sub,str.c_str());
 
@@ -46,6 +44,28 @@ void MainWindow::siteBChanged(int num)
 void MainWindow::siteBhChanged(int num)
 {
     siteB_h = num;
+    picRender();
+}
+void MainWindow::lineEditAChanged(const QString &mottoIn)
+{
+    motto = mottoIn;
+    picRender();
+}
+
+void MainWindow::lineEditBChanged(const QString &nameIn)
+{
+    name = nameIn;
+    picRender();
+}
+void MainWindow::spinBoxAChanged(int value)
+{
+    fsA = value;
+    picRender();
+}
+
+void MainWindow::spinBoxBChanged(int value)
+{
+    fsB = value;
     picRender();
 }
 
@@ -74,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QTextStream in_stream(&file);
     all = in_stream.readAll();
     sub = (char*)malloc(all.length()+1000);
-    //in_stream.flush();
+
     file.close();
 
     img = new QImage("/home/midorikawa/qt/untitled5/EF_WR_BG00.png");
@@ -86,11 +106,20 @@ MainWindow::MainWindow(QWidget *parent) :
     fsB = 25;
     motto = "看来交易已经成功了";
     name = "Ludwig Van Beethoven";
+    ui->lineEdit_2->setText(QString("看来交易已经成功了"));
+    ui->lineEdit->setText(QString("Ludwig Van Beethoven"));
+    ui->spinBox->setValue(55);
+    ui->spinBox_2->setValue(25);
 
     ui->label->setPixmap(QPixmap::fromImage(*img));
     picRender();
+
     connect(ui->verticalSlider, &QSlider::valueChanged, this, &MainWindow::siteAChanged);
     connect(ui->verticalSlider_2, &QSlider::valueChanged, this, &MainWindow::siteBChanged);
     connect(ui->horizontalSlider, &QSlider::valueChanged, this, &MainWindow::siteBhChanged);
+    connect(ui->lineEdit_2, &QLineEdit::textChanged, this ,&MainWindow::lineEditAChanged);
+    connect(ui->lineEdit, &QLineEdit::textChanged, this ,&MainWindow::lineEditBChanged);
+    connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(spinBoxAChanged(int)));
+    connect(ui->spinBox_2, SIGNAL(valueChanged(int)), this, SLOT(spinBoxBChanged(int)));
     connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::showFont);
 }
