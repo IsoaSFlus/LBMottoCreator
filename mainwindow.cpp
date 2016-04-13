@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
+#include <QFontDialog>
 
 MainWindow::~MainWindow()
 {
@@ -12,12 +13,18 @@ MainWindow::~MainWindow()
 
 }
 
+void picRender()
+{
+    QString temp;
+    temp = all + "Style: Default," + font +",54,&H00FFFFFF,&H00FFFFFF,&H00295479,&H00FFFFFF,-1,0,0,0,100,100,3,0,1,2,0,5,10,10,10,1" + "\n" + "[Events]" + "Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\\fs"
+}
+
 void MainWindow::on_lineEdit_2_textEdited(int num)
 {
 
     QImage img_temp = img->copy();
 
-    num = 321 - num;
+    siteA = 321 - num;
     QString temp;
     temp = all + sectA + QString("%1").arg(num) + sectB + "\n";
     const std::string str = temp.toStdString();
@@ -28,9 +35,15 @@ void MainWindow::on_lineEdit_2_textEdited(int num)
 
     lb_render(img_b, sub, all.length()+300);
     ui->label->setPixmap(QPixmap::fromImage(img_temp));
-
-
 }
+
+void MainWindow::showFont()
+{
+    bool ok;
+    QFont f = QFontDialog::getFont(&ok);
+    f.family();
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -56,4 +69,5 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label->setPixmap(QPixmap::fromImage(*img));
 
     connect(ui->verticalSlider, &QSlider::valueChanged, this, &MainWindow::on_lineEdit_2_textEdited);
+    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::showFont);
 }

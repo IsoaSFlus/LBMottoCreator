@@ -17,9 +17,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void picRender(int siteA, int siteB, int fsA, int fsB, int siteB_h, QString font, QString motto, QString name);
 
 private slots:
     void on_lineEdit_2_textEdited(int num);
+    void showFont();
 
 private:
     Ui::MainWindow *ui;
@@ -29,6 +31,11 @@ private:
     const QString sectB = ")}你为什么这么熟练啊";
     char *sub;
     QString all;
+    int siteA, siteB, fsA, fsB, siteB_h;
+    QString font;
+    QString motto;
+    QString name;
+
 };
 
 #endif // MAINWINDOW_H

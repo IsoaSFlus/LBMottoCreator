@@ -22,3 +22,6 @@ HEADERS  += mainwindow.h \
 LIBS    += -lass
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    lbmottocreator.qrc
