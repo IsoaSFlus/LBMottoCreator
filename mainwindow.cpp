@@ -4,6 +4,9 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QFontDialog>
+#include <QClipboard>
+#include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::~MainWindow()
 {
@@ -72,8 +75,61 @@ void MainWindow::spinBoxBChanged(int value)
 void MainWindow::showFont()
 {
     bool ok;
+    QString font_last = font;
     QFont f = QFontDialog::getFont(&ok);
+
     font = f.family();
+    qDebug()<<font<<endl;
+    if(font.isEmpty())
+        font = font_last;
+    picRender();
+}
+
+void MainWindow::saveToClipboard()
+{
+    QClipboard *board = QApplication::clipboard();
+    QString temp;
+    QImage img_temp = img->copy();
+
+    temp = all + "Style: Default," + font +",54,&H00FFFFFF,&H00FFFFFF,&H00295479,&H00FFFFFF,-1,0,0,0,100,100,3,0,1,2,0,5,10,10,10,1" + QString("\n");
+    temp += "[Events]" + QString("\n");
+    temp += QString("Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\\fs") + QString("%1").arg(fsA) + QString("\\blur3\\pos(500,") + QString("%1").arg(siteA) + ")}" + motto + QString("\n");
+    temp += QString("Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\\fs") + QString("%1").arg(fsB) + QString("\\blur3\\pos(") + QString("%1").arg(siteB_h) + "," +  QString("%1").arg(siteB) + QString(")}") + name + QString("\n");
+    const std::string str = temp.toStdString();
+    strcpy(sub,str.c_str());
+
+    img_b = img_temp.bits();
+
+    lb_render(img_b, sub, all.length()+1000);
+
+    board->setImage(img_temp);
+
+}
+
+void MainWindow::saveToLocal()
+{
+    QString file_path = QFileDialog::getSaveFileName(this, tr("Save Image"), ".", tr("Image File(*.png)"));
+    if(!file_path.isEmpty())
+    {
+        if(QFileInfo(file_path).suffix().isEmpty())
+            file_path.append(".png");
+        QString temp;
+        QImage img_temp = img->copy();
+
+        temp = all + "Style: Default," + font +",54,&H00FFFFFF,&H00FFFFFF,&H00295479,&H00FFFFFF,-1,0,0,0,100,100,3,0,1,2,0,5,10,10,10,1" + QString("\n");
+        temp += "[Events]" + QString("\n");
+        temp += QString("Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\\fs") + QString("%1").arg(fsA) + QString("\\blur3\\pos(500,") + QString("%1").arg(siteA) + ")}" + motto + QString("\n");
+        temp += QString("Dialogue: 0,0:00:00.00,0:00:06.00,Default,,0000,0000,0000,,{\\an5\\fs") + QString("%1").arg(fsB) + QString("\\blur3\\pos(") + QString("%1").arg(siteB_h) + "," +  QString("%1").arg(siteB) + QString(")}") + name + QString("\n");
+        const std::string str = temp.toStdString();
+        strcpy(sub,str.c_str());
+
+        img_b = img_temp.bits();
+
+        lb_render(img_b, sub, all.length()+1000);
+        img_temp.save(file_path);
+    }
+    else
+        QMessageBox::warning(this, tr("Error"), tr("A empty path"));
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -122,4 +178,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(spinBoxAChanged(int)));
     connect(ui->spinBox_2, SIGNAL(valueChanged(int)), this, SLOT(spinBoxBChanged(int)));
     connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::showFont);
+    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::saveToClipboard);
+    connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::saveToLocal);
 }

@@ -28,6 +28,8 @@ private slots:
     void spinBoxAChanged(int value);
     void spinBoxBChanged(int value);
     void showFont();
+    void saveToClipboard();
+    void saveToLocal();
 
 private:
     Ui::MainWindow *ui;
