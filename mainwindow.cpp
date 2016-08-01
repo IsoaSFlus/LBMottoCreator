@@ -145,7 +145,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->verticalSlider_2->setValue(321-250);
     ui->horizontalSlider->setValue(800);
 
-    QFile file("/home/midorikawa/qt/untitled5/lb.ass");
+    QFile file(":/ass/ass");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in_stream(&file);
     all = in_stream.readAll();
@@ -153,7 +153,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     file.close();
 
-    img = new QImage("/home/midorikawa/qt/untitled5/EF_WR_BG00.png");
+    img = new QImage(":/image/bg");
     img_b = img->bits();
     siteA = 140;
     siteB = 250;

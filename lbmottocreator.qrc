@@ -1,1 +1,9 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/image">
+        <file alias="icon">icon.ico</file>
+        <file alias="bg">bg.png</file>
+    </qresource>
+    <qresource prefix="/ass">
+        <file alias="ass">lb.ass</file>
+    </qresource>
+</RCC>

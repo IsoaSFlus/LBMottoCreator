@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = untitled5
+TARGET = LBMOttoCreator
 TEMPLATE = app
 
 
@@ -25,3 +25,6 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
     lbmottocreator.qrc
+
+RC_FILE += \
+    ico.rc
