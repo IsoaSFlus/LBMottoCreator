@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#include <ass.h>
+#include <ass/ass.h>
 
 #define PNG_BYTES_TO_CHECK 4
 
